@@ -4,7 +4,7 @@
   
   --textcolor: #121212;
   --bgcolor: #fff;
-  --highlight: #2749c9;
+  --highlight: #121212;
 
 }
 
@@ -12,13 +12,13 @@
   * {
     --textcolor: #dadada;
     --bgcolor: #141414;
-    --highlight: #ffc400;
+    --highlight: #dadada;
   }
 }
 
 body {
   font-size: 18px;
-  font-family: system-ui, sans-serif;
+  font-family: "Times New Roman", Times, serif;
   line-height: 1.45;
   color: var(--textcolor);
   background: var(--bgcolor);
@@ -78,12 +78,12 @@ nav a:not(:last-of-type) {
 /* ------- General ------- */
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
   color: var(--highlight);
 }
 
 a:hover {
-  border-bottom: 1px solid;
+  opacity: .6;
 }
 
 h2, h3, h4 {
@@ -416,6 +416,51 @@ article time {
   top: .75em;
   right: .5em;
   z-index: 4;
+}
+
+/* ------- Book Tabs ------- */
+
+#books input[type="radio"] {
+  display: none;
+}
+
+#books > label {
+  display: inline-block;
+  cursor: pointer;
+  padding: .4em 1.2em .4em 0;
+  margin-right: 1em;
+  opacity: .4;
+  font-size: 1em;
+  font-weight: 600;
+  vertical-align: baseline;
+  line-height: 1.45;
+  border-bottom: 2px solid transparent;
+}
+
+#books > label:hover {
+  opacity: .7;
+  border-bottom: none;
+}
+
+#books > label:before,
+#books > label:after {
+  content: "";
+}
+
+#tab-nonfiction:checked + label[for="tab-nonfiction"],
+#tab-fiction:checked + label[for="tab-fiction"] {
+  opacity: 1;
+  border-bottom: 2px solid var(--highlight);
+}
+
+.tab-content {
+  display: none;
+  margin-top: 2em;
+}
+
+#tab-nonfiction:checked ~ #content-nonfiction,
+#tab-fiction:checked ~ #content-fiction {
+  display: block;
 }
 
 /* ------- Print ------- */
