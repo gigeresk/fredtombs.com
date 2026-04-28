@@ -41,7 +41,7 @@
                <li><a href="https://github.com/parallaxsw/OpenSTA">OpenSTA</a> for timing</li>
                <li>and back to VTR's <a href="https://github.com/verilog-to-routing/vtr-verilog-to-routing/tree/master/utils/fasm">genfasm</a> for bitstream generation.</li>
             </ul>
-            <p>As part of our day-to-day CI operation, we run our toolchain a lot. Hundreds of times per day on a slow day. This helps us catch if any architecture of CAD
+            <p>As part of our day-to-day CI operation, we run our toolchain a lot. Hundreds of times per day on a slow day. This helps us catch if any architecture or CAD
                development we've done introduced bugs or quality regressions.
                It's stopped bugs in their tracks. But running code at that frequency has also exposed issues in our dependencies.</p>
             <h3>The catch</h3>
@@ -193,14 +193,15 @@
               <tr><td class="cd">pObj-&gt;pCopy = (Abc_Obj_t *)(ABC_PTRUINT_T)i;</td></tr>
             </table>
             <p>
-               I personally haven't the integer-stuffed-into-pointer-field case cause an assert, but this is clearly what the assert is safeguarding against. We're assigning an int (cast to a pointer)
+               I personally haven't seen the integer-stuffed-into-pointer-field case cause an assert, but this is clearly what the assert is safeguarding against. We're assigning an int (cast to a pointer)
                to <code>pCopy</code>.
                While I've only hit the assert in the legal-pointer-cast-down case, it is protecting against undesired behaviour.
                Here's my final offer:
+            </p>
                <table class="c-block no-ln">
-               <tr><td class="cd"><code>assert((ABC_PTRUINT_T)pFanin->pCopy &gt= 0xFFFF );  // no small int values, no NULL</td></tr>
+               <tr><td class="cd"><code>assert((ABC_PTRUINT_T)pFanin->pCopy &gt; 0xFFFF );  // no small int values, no NULL</code></td></tr>
                </table>
-               <p>The original assert wasn't far off from this, but it had growing pains when the world moved to 64B. The inequality also makes the intent a bit clearer vs the bitwise <code>'&'</code>.</p>
+               <p>The original assert wasn't far off from this, but it had growing pains when the world moved to 64-bit. The inequality also makes the intent a bit clearer vs the bitwise <code>'&'</code>.</p>
                <p>As an added security measure, I recommend building ABC with <code>-DNDEBUG</code> to strip asserts from builds deployed to customers, who shouldn't ever have to look at asserts. </p>
 
             <h3>The release</h3>
