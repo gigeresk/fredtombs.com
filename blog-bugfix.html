@@ -27,6 +27,7 @@
             <p><a href="index.html#projects">← Projects</a></p>
             <h2>Why ABC was randomly crashing our FPGA CI (and the 20-year-old assert behind it)</h2>
             <p><em>April 2026</em></p>
+            <h3>The hook</h3>
             <p>
                A 20-year-old assert in ABC was written for 32-bit systems, where it made some degree of sense. On 64-bit with <a href="https://en.wikipedia.org/wiki/Address_space_layout_randomization">ASLR</a>,
                it fires intermittently; just rarely enough to look like noise. We run our FPGA toolchain dozens to hundreds of times per day, so it wasn't noise.
@@ -35,7 +36,7 @@
                The toolchain is built on fully open-source tools:</p>
             <ul>
                <li>elaboration with the <a href="https://github.com/MikePopoloski/slang">slang</a> SystemVerilog parser (or <a href="https://github.com/ghdl/ghdl">GHDL</a> for VHDL)</li>
-               <li><a href="https://github.com/zeroasiccorp/wildebeest">wildebeest</a>, a custom synthesis engine built on top of <a href="https://github.com/berkeley-abc/abc">abc</a> and <a href="https://github.com/yosyshq/yosys">yosys</a></li>
+               <li><a href="https://github.com/zeroasiccorp/wildebeest">wildebeest</a>, a custom synthesis engine built on top of <a href="https://github.com/berkeley-abc/abc">ABC</a> and <a href="https://github.com/yosyshq/yosys">yosys</a></li>
                <li>VTR's <a href="https://github.com/verilog-to-routing/vtr-verilog-to-routing">VPR</a> for place, route</li>
                <li><a href="https://github.com/parallaxsw/OpenSTA">OpenSTA</a> for timing</li>
                <li>and back to VTR's <a href="https://github.com/verilog-to-routing/vtr-verilog-to-routing/tree/master/utils/fasm">genfasm</a> for bitstream generation.</li>
@@ -103,7 +104,7 @@
                 <tr><td class="ln">218</td><td class="cd">    <span class="c-kw">return</span> pTruth;</td></tr>
                 <tr><td class="ln">219</td><td class="cd">}</td></tr>
               </table>
-              <p>This code is part of the implementation of lutpack, an abc command described in <a href="https://people.eecs.berkeley.edu/~alanmi/publications/2008/iccad08_lp.pdf">this paper</a>.
+              <p>This code is part of the implementation of <code>lutpack</code>, an ABC command described in <a href="https://people.eecs.berkeley.edu/~alanmi/publications/2008/iccad08_lp.pdf">this paper</a>.
             Let's resist the temptation to get bogged down in the algorithmic details; all we need to know is that it is a useful command for FPGA synthesis.</p>
               <p>I see two possibilities.</p>
               <ol>
@@ -112,20 +113,22 @@
               </ol>
                <p>Let's break down the assert, and analyze it from the perspective of the second possibility.</p>
                <p><code>assert( ((unsigned)(ABC_PTRUINT_T)pFanin-&gt;pCopy) &amp; 0xffff0000 );</code></p>
-               <p><code>pFanin</code> is an <code>Abc_Obj_t_</code>, which holds a <code>Abc_Obj_t *</code>, <code>pCopy</code>. We're off to a good start; this isn't a <code>void *</code> being interpreted as the wrong type.
-               On my system, which I guarantee you is 64-bit,
-               <code>pFanin-&gt;pCopy</code> will point to an 8B address
-               <code>(ABC_PTRUINT_T)pFanin-&gt;pCopy</code> is a cast to <code>typedef unsigned long ABC_PTRUINT_T;</code>, which is also 8B
-               <code>(unsigned)(ABC_PTRUINT_T)pFanin-&gt;pCopy</code> will be a cast down to 4B.</p>
-               <p>On 32-bit Linux, the user address space is typically <code>0x00000000-0xBFFFFFFF</code>. The heap, stack, and mmap regions sit well above <code>0x10000</code> by convention — the bottom of the address space is left unmapped to catch null dereferences, and the text segment historically starts at <code>0x08048000</code>. So in practice, heap and mmap pointers have at least one of bits 16–31 set. The assert author was relying on that convention, not a language guarantee.</p>
+               <ul>
+                 <li><code>pFanin</code> is an <code>Abc_Obj_t *</code>, which itself holds an <code>Abc_Obj_t *</code> named <code>pCopy</code> — not a <code>void *</code> being interpreted as the wrong type, so we're off to a good start.</li>
+                 <li>On a 64-bit system, <code>pFanin-&gt;pCopy</code> points to an 8-byte address.</li>
+                 <li><code>(ABC_PTRUINT_T)pFanin-&gt;pCopy</code> casts to <code>typedef unsigned long ABC_PTRUINT_T</code>, which is also 8 bytes.</li>
+                 <li><code>(unsigned)(ABC_PTRUINT_T)pFanin-&gt;pCopy</code> then truncates down to 4 bytes.</li>
+               </ul>
+               <p>On 32-bit Linux, the user address space is typically <code>0x00000000-0xBFFFFFFF</code>. The heap, stack, and mmap regions sit well above <code>0x10000</code> by convention; the bottom of the address space is left unmapped to catch null dereferences, and the text segment historically starts at <code>0x08048000</code>. 
+                  So in practice, heap and mmap pointers have at least one of bits 16-31 set. The assert was almost certainly relying on that convention.</p>
                <p>On 64-bit, wouldn't you know it, pointers are 64 bits wide. When you cast to <code>unsigned</code> (32 bits) you get the lower half, and that lower half
-               can be anything — including values below <code>0x10000</code> — depending on where ASLR placed the mapping. The discrimination
+               can be anything (including values below <code>0x10000</code>) depending on where ASLR placed the mapping. The discrimination
                completely breaks down.</p>
                <p>The code was almost certainly written and tested on 32-bit, worked fine for years, then started failing intermittently
                when the codebase moved to 64-bit systems with ASLR (which was around the time this line was last edited). Nobody noticed for a long time because it only fires when the
-               allocation happens to land at an address where <code>the_lower32_bits &lt; 0x10000</code>. With ~13 bits of brk entropy on Linux in page-sized steps, that works out to roughly 1 in 512 runs.</p>
+               allocation happens to land at an address where <code>the_lower32_bits &lt; 0x10000</code> (<code>0x0000-0xFFFF</code>). With ~13 bits of brk entropy on Linux in page-sized steps, that works out to roughly 1 in 512 runs.</p>
                <p>
-               How do I replicate the error? Well, I could run either raw abc or our synthesis tool in a tight loop in a debugger and hope for the worst,
+               How do I replicate the error? Well, I could run either raw ABC or our synthesis tool in a tight loop in a debugger and hope for the worst,
                but that seems like more of a plan B. Instead of hiring a bunch of monkeys with typewriters, what if I got a really eloquent monkey?</p>
             <h3>The bait</h3>
             <p>I should probably write my own malloc to allocate memory at 4GB boundaries, which should trigger the assert with valid input.</p>
@@ -148,11 +151,11 @@
                 <tr><td class="ln">70</td><td class="cd">&nbsp;</td></tr>
                 <tr><td class="ln">71</td><td class="cd">    <span class="c-cm">/* try several 4 GB-boundary + 4 KB addresses until one maps */</span></td></tr>
                 <tr><td class="ln">72</td><td class="cd">    <span class="c-kw">uint64_t</span> candidates[] = {</td></tr>
-                <tr><td class="ln">73</td><td class="cd">        0x100001000ULL,</td></tr>
-                <tr><td class="ln">74</td><td class="cd">        0x200001000ULL,</td></tr>
-                <tr><td class="ln">75</td><td class="cd">        0x300001000ULL,</td></tr>
-                <tr><td class="ln">76</td><td class="cd">        0x400001000ULL,</td></tr>
-                <tr><td class="ln">77</td><td class="cd">        0x500001000ULL,</td></tr>
+                <tr><td class="ln">73</td><td class="cd">        0x100000000ULL,</td></tr>
+                <tr><td class="ln">74</td><td class="cd">        0x200000000ULL,</td></tr>
+                <tr><td class="ln">75</td><td class="cd">        0x300000000ULL,</td></tr>
+                <tr><td class="ln">76</td><td class="cd">        0x400000000ULL,</td></tr>
+                <tr><td class="ln">77</td><td class="cd">        0x500000000ULL,</td></tr>
                 <tr><td class="ln">78</td><td class="cd">    };</td></tr>
                 <tr><td class="ln">79</td><td class="cd">    <span class="c-kw">for</span> (<span class="c-kw">int</span> i = 0; i &lt; 5; i++) {</td></tr>
                 <tr><td class="ln">80</td><td class="cd">        <span class="c-kw">void</span> *p = <span class="c-fn">mmap</span>((<span class="c-kw">void</span> *)candidates[i], BAD_REGION_SIZE,</td></tr>
@@ -173,30 +176,36 @@
                 <tr><td class="ln">95</td><td class="cd">            bad_region, lo32, check,</td></tr>
                 <tr><td class="ln">96</td><td class="cd">            check == 0 ? "assert will FIRE" : "BAD address choice");</td></tr>
                 <tr><td class="ln">97</td><td class="cd">    } <span class="c-kw">else</span> {</td></tr>
-                <tr><td class="ln">98</td><td class="cd">        <span class="c-fn">fprintf</span>(stderr, "[trigger] WARNING: could not map bad region – bug won't trigger\n");</td></tr>
+                <tr><td class="ln">98</td><td class="cd">        <span class="c-fn">fprintf</span>(stderr, "[trigger] WARNING: could not map bad region - bug won't trigger\n");</td></tr>
                 <tr><td class="ln">99</td><td class="cd">    }</td></tr>
                 <tr><td class="ln">100</td><td class="cd">}</td></tr>
               </table>
-               <p>The file is a shim over the linked malloc. It can allocate exactly at 4 GB boundaries (with a page-sized, 4KB offset). Then the hard part:
-               it intercepts exactly the right allocation, malloc(13416), for vTtElems, the leaf truth-table buffer. If the allocation was the same size as everything else,
+               <p>The file is a shim over the linked malloc. It can allocate exactly at 4 GB boundaries, which is exactly the range of allocations that have triggered the assert in CI! Then the hard part:
+               it intercepts exactly the right allocation, <code>malloc(13416)</code>, for <code>vTtElems</code>, the leaf truth-table buffer. If the allocation was the same size as everything else,
                I imagine we'd have to modify the allocation to a unique number. This allocation is also specific to the design I've been testing this on
-               (which happens to be named arbiter.blif). The shim lets the vTtElems allocation leak rather than free it — not a quirk of the agent, but forced by the design: memory placed at a hand-picked address was never given out by the real allocator, so it can't be handed back to it.</p>
+               (which happens to be named <code>arbiter.blif</code>). The shim lets the <code>vTtElems</code> allocation leak rather than free it: not a quirk of the agent, but forced by the design, as memory placed at a hand-picked address was never given out by the real allocator, so it can't be handed back to it.</p>
 
             <h3>The switch</h3>
-            <p>My intuition was to just replace this with a null check. pCopy has a * type. Why would we still have to worry about an illegal address?
+            <p>My intuition was to just replace this with a null check. <code>pCopy</code> has a <code>*</code> type. Why would we still have to worry about an illegal address?
                Well, because of this line in <code>Lpk_NodeCutsCheckDsd</code>:
             </p>
             <table class="c-block no-ln">
               <tr><td class="cd">pObj-&gt;pCopy = (Abc_Obj_t *)(ABC_PTRUINT_T)i;</td></tr>
             </table>
             <p>
-               This isn't causing any issues, but clearly the assert is safeguarding against pCopy being in the state of "holding an integer value".
-               Luckily, we can replace the assert with <code>if (pFanin-&gt;pCopy == NULL) return NULL;</code> — checking for the one value that's actually invalid rather than relying on address-space assumptions.</p>
-               <p>Another option is to build abc with <code>-DNDEBUG</code> to strip asserts from deployed builds — though worth noting the tradeoff: this assert is guarding against a real condition (an integer stuffed into a pointer field by <code>Lpk_NodeCutsCheckDsd</code>), so stripping it silently skips that check too. The null check is the cleaner fix.</p>
+               I personally haven't the integer-stuffed-into-pointer-field case cause an assert, but this is clearly what the assert is safeguarding against. We're assigning an int (cast to a pointer)
+               to <code>pCopy</code>.
+               While I've only hit the assert in the legal-pointer-cast-down case, it is protecting against undesired behaviour.
+               Here's my final offer:
+               <table class="c-block no-ln">
+               <tr><td class="cd"><code>assert((ABC_PTRUINT_T)pFanin->pCopy &gt= 0xFFFF );  // no small int values, no NULL</td></tr>
+               </table>
+               <p>The original assert wasn't far off from this, but it had growing pains when the world moved to 64B. The inequality also makes the intent a bit clearer vs the bitwise <code>'&'</code>.</p>
+               <p>As an added security measure, I recommend building ABC with <code>-DNDEBUG</code> to strip asserts from builds deployed to customers, who shouldn't ever have to look at asserts. </p>
 
-            <h3>Takeaway</h3>
-            <p> I'll open a PR for abc and update its status here as time goes on, and I'll keep an eye open for similar bugs in the codebase.</p>
-            <p>EDA open-source projects need all the help they can get.
+            <h3>The release</h3>
+            <p> I'll open a PR for ABC and update its status here as time goes on, and I'll keep an eye open for similar bugs in the codebase.</p>
+            <p>Open-source EDA projects need all the help they can get!
                I've been working on an ABC regression test framework, and this is the perfect time to open-source it.
                It's hosted at <a href="https://github.com/gigeresk/abc-1212">abc-1212</a> and runs CI daily. It's still in development, and 
                needs more tests! If you know anything about ABC and want to add tracking for your use case, please file an issue or
