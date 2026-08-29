@@ -1,0 +1,42 @@
+[
+  {
+    "topic": "C++ data alignment",
+    "question": "On a typical 64-bit platform, what are `sizeof(T)` and `alignof(T)` for `struct T { char a; int b; char c; };` ?",
+    "answer": "`sizeof(T) == 12`, `alignof(T) == 4`.\n`a` at offset 0, then 3 bytes of padding, `b` at offset 4, `c` at offset 8, then 3 bytes of trailing padding so the array stride stays a multiple of 4."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "Why does a struct need trailing padding?",
+    "answer": "So that in an array every element stays correctly aligned. A struct's size must be a multiple of its alignment, so `&arr[i] == (char*)arr + i*sizeof(T)` keeps each element's most-aligned member on its required boundary."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "What does `alignas(16) int x;` guarantee, and what happens with `alignas(2) int x;` ?",
+    "answer": "`alignas(16)` forces `x` onto a 16-byte boundary. `alignas(2)` is ill-formed: `alignas` can only strengthen (increase) alignment, never weaken it below the type's natural alignment."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "Is dereferencing a misaligned pointer undefined behaviour in C++?",
+    "answer": "Yes. Even on x86, where it usually 'works', accessing an lvalue through a pointer that isn't suitably aligned for its type is UB. On ARM or with SIMD it can fault, and compilers may assume alignment when vectorizing."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "What are the size and alignment of `struct Empty {};` ?",
+    "answer": "`sizeof(Empty) == 1` (distinct objects need distinct addresses, so no zero-size complete objects), `alignof(Empty) == 1`. As a base class or under `[[no_unique_address]]` it can occupy no space (empty base optimization)."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "Reorder `struct { char a; double b; char c; int d; };` to minimize its size.",
+    "answer": "Order members from largest alignment to smallest and group the chars: `double b; int d; char a; char c;` — size 16 instead of 24."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "What does `offsetof` require of its type argument, and why?",
+    "answer": "The type must be standard-layout. For non-standard-layout types a member's offset isn't guaranteed to be a compile-time constant (vtable pointers, multiple or virtual inheritance can move members), so `offsetof` is conditionally-supported / UB there."
+  },
+  {
+    "topic": "C++ data alignment",
+    "question": "What alignment do `malloc` and plain `operator new` give you, and when is that not enough?",
+    "answer": "At least `alignof(std::max_align_t)`, typically 16 on x86-64. For over-aligned types (e.g. `alignas(64)`) C++17 `operator new` routes to the `align_val_t` overload; with `malloc` you need `aligned_alloc` or `posix_memalign`."
+  }
+]

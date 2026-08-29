@@ -563,6 +563,28 @@ article time {
   content: "";
 }
 
+/* ------- Question bank ------- */
+
+#quiz ol {
+  padding-left: 2.5ch;
+}
+
+#quiz li {
+  margin-bottom: .6em;
+}
+
+#quiz summary {
+  cursor: pointer;
+}
+
+#quiz .answer {
+  margin: .5em 0;
+  padding-left: 1ch;
+  border-left: 1px solid rgba(128, 128, 128, .35);
+  opacity: .8;
+  white-space: pre-wrap;
+}
+
 /* ------- Print ------- */
 
 @media print {
