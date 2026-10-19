@@ -11,17 +11,46 @@
   --c-cm: #3d7a00;
   --c-fn: #795e26;
 
+  --codebg: rgba(128, 128, 128, .07);
+  --selection: rgba(0, 51, 179, .15);
+
+}
+
+:root {
+  color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   * {
-    --textcolor: #dadada;
-    --bgcolor: #141414;
-    --highlight: #dadada;
-    --c-kw: #569cd6;
-    --c-cm: #6a9955;
-    --c-fn: #dcdcaa;
+    /* Warm off-white on near-black: less glare than pure white on grey */
+    --textcolor: #e3e0d9;
+    --bgcolor: #161514;
+    --highlight: #f2efe8;
+    --c-kw: #82aaff;
+    --c-cm: #8fae78;
+    --c-fn: #e3c78a;
+    --codebg: rgba(255, 255, 255, .05);
+    --selection: rgba(130, 170, 255, .25);
   }
+
+  /* Figures are diagrams on white; tone them down so they don't glare */
+  figure img {
+    filter: brightness(.85);
+    border-radius: 4px;
+    transition: filter .2s;
+  }
+
+  figure img:hover {
+    filter: none;
+  }
+
+  a {
+    text-decoration-color: rgba(227, 224, 217, .45);
+  }
+}
+
+::selection {
+  background: var(--selection);
 }
 
 .c-kw { color: var(--c-kw); }
@@ -40,7 +69,7 @@ table.c-block {
   font-size: .85em;
   border-spacing: 0;
   margin: 1em 0;
-  background: rgba(128, 128, 128, .07);
+  background: var(--codebg);
 }
 
 table.c-block td {
@@ -254,7 +283,7 @@ pre {
   display: block;
   white-space: pre-wrap;
   opacity: 1;
-  background: rgba(128, 128, 128, .07);
+  background: var(--codebg);
 }
 
 pre code {
@@ -292,6 +321,11 @@ input:checked + small {
 
 figure {
   margin: 2em 0 1.5em 0;
+  max-width: 80ch;
+}
+
+figure img, figure video {
+  margin: 0 auto;
 }
 
 figure figcaption {
@@ -520,28 +554,6 @@ article time {
 #tab-nonfiction:checked ~ #content-nonfiction,
 #tab-fiction:checked ~ #content-fiction {
   display: block;
-}
-
-/* ------- Question bank ------- */
-
-#quiz ol {
-  padding-left: 2.5ch;
-}
-
-#quiz li {
-  margin-bottom: .6em;
-}
-
-#quiz summary {
-  cursor: pointer;
-}
-
-#quiz .answer {
-  margin: .5em 0;
-  padding-left: 1ch;
-  border-left: 1px solid rgba(128, 128, 128, .35);
-  opacity: .8;
-  white-space: pre-wrap;
 }
 
 /* ------- Print ------- */
