@@ -28,7 +28,14 @@ Mocarabe is an array of PEs that can perform addition, multiplication, or off-ch
 
 Each PE and switch cycles through a fixed number of configurations (one per clock cycle), then repeats. Each of these is called a *context*, and how many there are is the *context depth*. A deeper context lets more operations share a resource, at the cost of throughput. Thanks to this resource sharing, a design with more operations than PEs can still fit onto an architecture.
 
-Once data reaches a PE, it must wait until its matching operand also reaches the PE and until the PE itself is ready to perform the computation. Each operand waits in a 64-deep operand FIFO (really a shift register that can be read at any position) until the computation needs it. To reach high clock speeds, the PEs and switches are deeply pipelined, so every operation and every hop takes several cycles.
+A quick aside for an interesting implementation concern. On a real system, wouldn't the torus's wrap-around
+over the edge lead to a necessarily long path from one edge of the chip to the other? Yes, if you placed blocks in their logical positions.
+But there's a trick to folding toroidally-connected blocks so that every link, wrap-arounds included, spans at most two blocks, as seen below (wrap-around links in red,
+and logical coordinates preserved):
+
+![The same 4 by 4 torus in logical order and in folded physical order](images/mocarabe/folding.svg "The same 4 × 4 torus placed in logical order (left) and folded (right). Wrap-around links are in red.")
+
+Onto Processing Elements. Once data reaches a PE, it must wait until its matching operand also reaches the PE and until the PE itself is ready to perform the computation. Each operand waits in a 64-deep operand FIFO (really a shift register that can be read at any position) until the computation needs it. To reach high clock speeds, the PEs and switches are deeply pipelined, so every operation and every hop takes several cycles.
 
 ![Block diagram of a processing element](images/mocarabe/pe.png "Inside a PE: C:1 muxes pick operands off the interconnect channels into the operand FIFOs, and context memories (CTX), one entry per context (the figure's II is the context depth), reconfigure each part every cycle. Fig. 2 from the [FCCM paper](https://ieeexplore.ieee.org/document/9444076).")
 
@@ -57,7 +64,9 @@ is bounded by the number of PEs in the array. This is done with a hypergraph par
 
 ![A dataflow graph, then the same graph grouped into PEs](images/mocarabe/dfg-partitioned.png "Left: the dataflow graph for y = (2a + x) × x². Right: the same graph partitioned into IO, adder and multiplier PEs. Figs. 4 and 5 from the [FCCM paper](https://ieeexplore.ieee.org/document/9444076).")
 
-Next, the clusters are placed using simulated annealing with a wirelength minimization target. Simulated annealing makes random moves (here, swapping PEs), and early on it sometimes accepts moves that make things worse, so it doesn't get stuck in a local optimum; as it cools, it gets pickier. Below, we see the placement for a fixed 11 × 14 architecture. PEs are displayed in their physical arrangement (which is why this doesn't look like a torus at first glance; the difference between logical and physical arrays is explained at the end of this post).
+Next, the clusters are placed using simulated annealing with a wirelength minimization target. Simulated annealing makes random moves (here, swapping PEs), and early on it sometimes accepts moves that make things worse, so it doesn't get stuck in a local optimum; as it cools, it gets pickier.
+
+Below, we see the placement for a fixed 11 × 14 architecture. PEs are displayed in their physical (folded) arrangement, as shown earlier.
 
 ![Simulated annealing shuffling operators inside a ring of IO PEs on an 11 by 14 array, with wirelength and accepted moves charted below](images/mocarabe/anim-placement.mp4 "Simulated annealing placing two copies of a DCT on an 11 × 14 array.")
 
@@ -114,13 +123,6 @@ Targeting a real FPGA and comparing against Vivado's high-level synthesis was th
 Here's a device view:
 
 ![Vivado device view of the overlay filling the Alveo U280](images/mocarabe/u280-floorplan.jpg "Mocarabe floorplanned on the Xilinx Alveo U280.")
-
-One interesting physical question is, on a real system, wouldn't the torus's wrap-around
-over the edge lead to a necessarily long path from one edge of the chip to the other? Yes, if you placed blocks in their logical positions.
-But there's a trick to folding toroidally-connected blocks so that every link, wrap-arounds included, spans at most two blocks, as seen below (wrap-around links in red,
-and logical coordinates preserved):
-
-![The same 4 by 4 torus in logical order and in folded physical order](images/mocarabe/folding.svg "The same 4 × 4 torus placed in logical order (left) and folded (right). Wrap-around links are in red.")
 
 There are three things standing between this project and a tapeout:
 - Adding a programmable bitstream interface

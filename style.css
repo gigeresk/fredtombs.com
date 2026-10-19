@@ -183,11 +183,7 @@ p, ul, ol, article {
 }
 
 ul {
-  list-style-type: none;
-}
-
-ul li::marker {
-  content: "\2022   ";
+  list-style-type: disc;
 }
 
 li {
