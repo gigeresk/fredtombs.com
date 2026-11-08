@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 285" font-family="Times New Roman, Times, serif" font-size="14">
+<rect width="820" height="285" fill="#fff"/>
+<text x="40.0" y="30.0" font-size="13" text-anchor="start" fill="#5a5a5a">One multiplier PE on the chip</text>
+<text x="780.0" y="30.0" font-size="13" text-anchor="end" fill="#121212">21.7K µm²</text>
+<path d="M44.0,44.0 H360.9 Q360.9,44.0 360.9,44.0 V92.0 Q360.9,92.0 360.9,92.0 H44.0 Q40.0,92.0 40.0,88.0 V48.0 Q40.0,44.0 44.0,44.0 Z" fill="#2a78d6"/>
+<path d="M362.9,44.0 H546.8 Q546.8,44.0 546.8,44.0 V92.0 Q546.8,92.0 546.8,92.0 H362.9 Q362.9,92.0 362.9,92.0 V44.0 Q362.9,44.0 362.9,44.0 Z" fill="#eb6834"/>
+<path d="M548.8,44.0 H689.9 Q689.9,44.0 689.9,44.0 V92.0 Q689.9,92.0 689.9,92.0 H548.8 Q548.8,92.0 548.8,92.0 V44.0 Q548.8,44.0 548.8,44.0 Z" fill="#1baf7a"/>
+<path d="M691.9,44.0 H747.3 Q747.3,44.0 747.3,44.0 V92.0 Q747.3,92.0 747.3,92.0 H691.9 Q691.9,92.0 691.9,92.0 V44.0 Q691.9,44.0 691.9,44.0 Z" fill="#eda100"/>
+<path d="M749.3,44.0 H776.0 Q780.0,44.0 780.0,48.0 V88.0 Q780.0,92.0 776.0,92.0 H749.3 Q749.3,92.0 749.3,92.0 V44.0 Q749.3,44.0 749.3,44.0 Z" fill="#e87ba4"/>
+<path d="M43.0,102.0 H777.0 Q780.0,102.0 780.0,105.0 V107.0 Q780.0,110.0 777.0,110.0 H43.0 Q40.0,110.0 40.0,107.0 V105.0 Q40.0,102.0 43.0,102.0 Z" fill="#e6e6e6"/>
+<path d="M43.0,102.0 H571.7 Q574.7,102.0 574.7,105.0 V107.0 Q574.7,110.0 571.7,110.0 H43.0 Q40.0,110.0 40.0,107.0 V105.0 Q40.0,102.0 43.0,102.0 Z" fill="#5a5a5a"/>
+<text x="40.0" y="128.0" font-size="12" text-anchor="start" fill="#5a5a5a">Flip-flops: 15.7K µm², 72% of the PE</text>
+<rect x="40" y="149" width="12" height="12" rx="2" fill="#2a78d6"/>
+<text x="60.0" y="160.0" font-size="13" text-anchor="start" fill="#121212">Operand FIFOs (2 × 16 deep)</text>
+<text x="370.0" y="160.0" font-size="13" text-anchor="end" fill="#5a5a5a">9,489 µm²</text>
+<text x="420.0" y="160.0" font-size="13" text-anchor="end" fill="#121212">44%</text>
+<rect x="40" y="171" width="12" height="12" rx="2" fill="#eb6834"/>
+<text x="60.0" y="182.0" font-size="13" text-anchor="start" fill="#121212">NoC switches (2 channels)</text>
+<text x="370.0" y="182.0" font-size="13" text-anchor="end" fill="#5a5a5a">5,463 µm²</text>
+<text x="420.0" y="182.0" font-size="13" text-anchor="end" fill="#121212">25%</text>
+<rect x="40" y="193" width="12" height="12" rx="2" fill="#1baf7a"/>
+<text x="60.0" y="204.0" font-size="13" text-anchor="start" fill="#121212">Config storage (6 slots)</text>
+<text x="370.0" y="204.0" font-size="13" text-anchor="end" fill="#5a5a5a">4,207 µm²</text>
+<text x="420.0" y="204.0" font-size="13" text-anchor="end" fill="#121212">19%</text>
+<rect x="40" y="215" width="12" height="12" rx="2" fill="#eda100"/>
+<text x="60.0" y="226.0" font-size="13" text-anchor="start" fill="#121212">Control, registers, input muxes</text>
+<text x="370.0" y="226.0" font-size="13" text-anchor="end" fill="#5a5a5a">1,685 µm²</text>
+<text x="420.0" y="226.0" font-size="13" text-anchor="end" fill="#121212">8%</text>
+<rect x="40" y="237" width="12" height="12" rx="2" fill="#e87ba4"/>
+<text x="60.0" y="248.0" font-size="13" text-anchor="start" fill="#121212">Multiplier</text>
+<text x="370.0" y="248.0" font-size="13" text-anchor="end" fill="#5a5a5a">903 µm²</text>
+<text x="420.0" y="248.0" font-size="13" text-anchor="end" fill="#121212">4%</text>
+</svg>
