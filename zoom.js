@@ -1,6 +1,6 @@
 // Click an image to see it full screen; click again (or press Esc) to close.
 // Uses the theme's .lightbox styles. Images inside links are left alone so
-// thumbnails still navigate.
+// thumbnails still navigate, and book covers are too small to be worth zooming.
 (() => {
   let box = null;
 
@@ -25,7 +25,7 @@
     document.documentElement.classList.add("lightbox-open");
   };
 
-  const zoomable = (img) => !img.closest("a, .lightbox");
+  const zoomable = (img) => !img.closest("a, .lightbox, ul.books");
 
   document.addEventListener("click", (e) => {
     const img = e.target.closest("img");

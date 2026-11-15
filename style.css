@@ -186,6 +186,17 @@ nav a:not(:last-of-type) {
   margin-right: 1.5vw;
 }
 
+/* The front page's nav doesn't link to the section you're already on. Home is
+   showing when no section is targeted (#home is the default, not a :target). */
+body:not(:has(section:target)) nav.tabs a[href="/"],
+body:not(:has(section:target)) nav.tabs a[href="index.html"], /* opened from disk: see local-links.js */
+body:has(#books:target) nav.tabs a[href="#books"],
+body:has(#friends:target) nav.tabs a[href="#friends"] {
+  pointer-events: none;
+  text-decoration: none;
+  cursor: default;
+}
+
 /* ------- General ------- */
 
 a {
@@ -252,9 +263,39 @@ ul.posts img {
   outline: 1px solid rgba(128, 128, 128, .3);  /* keeps dark images' edges visible in dark mode */
 }
 
+/* Book list: same rows as the blog list, but covers keep their own shape,
+   centred in a fixed column so the titles still line up */
+ul.books li {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  align-items: center;
+  justify-items: start;
+  gap: 1em;
+}
+
+ul.books img {
+  width: auto;
+  justify-self: center;
+}
+
+ul.books small {
+  display: block;
+  font-size: 1em;
+  opacity: .7;
+}
+
 @media only screen and (max-width: 680px) {
   ul.posts img {
     width: 72px;
+    height: 72px;
+  }
+
+  ul.books li {
+    grid-template-columns: 58px 1fr;
+  }
+
+  ul.books img {
+    width: auto;
     height: 72px;
   }
 }
@@ -600,51 +641,6 @@ html.lightbox-open { overflow: hidden; }
   top: .75em;
   right: .5em;
   z-index: 4;
-}
-
-/* ------- Book Tabs ------- */
-
-#books input[type="radio"] {
-  display: none;
-}
-
-#books > label {
-  display: inline-block;
-  cursor: pointer;
-  padding: .4em 1.2em .4em 0;
-  margin-right: 1em;
-  opacity: .4;
-  font-size: 1em;
-  font-weight: 600;
-  vertical-align: baseline;
-  line-height: 1.45;
-  border-bottom: 2px solid transparent;
-}
-
-#books > label:hover {
-  opacity: .7;
-  border-bottom: none;
-}
-
-#books > label:before,
-#books > label:after {
-  content: "";
-}
-
-#tab-nonfiction:checked + label[for="tab-nonfiction"],
-#tab-fiction:checked + label[for="tab-fiction"] {
-  opacity: 1;
-  border-bottom: 2px solid var(--highlight);
-}
-
-.tab-content {
-  display: none;
-  margin-top: 2em;
-}
-
-#tab-nonfiction:checked ~ #content-nonfiction,
-#tab-fiction:checked ~ #content-fiction {
-  display: block;
 }
 
 /* ------- Print ------- */

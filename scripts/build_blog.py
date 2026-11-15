@@ -70,15 +70,16 @@ TEMPLATE = """\
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap">
       <link rel="stylesheet" href="style.css">
       <script src="zoom.js" defer></script>
+      <script src="local-links.js"></script>
    </head>
    <body>
       <!-- Generated from {source} by scripts/build_blog.py. Edit the markdown, not this file. -->
       <header>
          <h1>Fred Tombs</h1>
          <nav>
-            <a href="index.html">Home</a>
-            <a href="index.html#books">Book Recommendations</a>
-            <a href="index.html#friends">Friends</a>
+            <a href="/">Home</a>
+            <a href="/#books">Book Recommendations</a>
+            <a href="/#friends">Friends</a>
          </nav>
       </header>
       <main>

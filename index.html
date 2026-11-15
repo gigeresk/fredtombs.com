@@ -20,12 +20,13 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap">
       <link rel="stylesheet" href="style.css">
       <script src="zoom.js" defer></script>
+      <script src="local-links.js"></script>
    </head>
    <body>
       <header>
          <h1>Fred Tombs</h1>
-         <nav>
-            <a href="#home">Home</a>
+         <nav class="tabs">
+            <a href="/">Home</a>
             <a href="#books">Book Recommendations</a>
             <a href="#friends">Friends</a>
          </nav>
@@ -54,27 +55,24 @@
          </section>
          <section id="books">
             <!-- BOOKS -->
-            <input type="radio" name="book-tab" id="tab-nonfiction" checked>
-            <label for="tab-nonfiction">Non-Fiction</label>
-            <input type="radio" name="book-tab" id="tab-fiction">
-            <label for="tab-fiction">Fiction</label>
-            <div class="tab-content" id="content-nonfiction">
-               <ul>
-                  <li><strong>The Years of Lyndon Johnson</strong> — Robert Caro</li>
-                  <li><strong>The Power Broker</strong> — Robert Caro</li>
-                  <li><strong>Zen and the Art of Motorcycle Maintenance</strong> — Robert M. Pirsig</li>
-                  <li><strong>CMOS VLSI Design</strong> — Weste &amp; Harris</li>
-                  <li><strong>VLSI Physical Design: From Graph Partitioning to Timing Closure</strong> — Kahng et al.</li>
-                  <li><strong>Advanced FPGA Design</strong> — Steve Kilts</li>
-               </ul>
-            </div>
-            <div class="tab-content" id="content-fiction">
-               <ul>
-                  <li><strong>A Confederacy of Dunces</strong> — John Kennedy Toole</li>
-                  <li><strong>Remainder</strong> — Tom McCarthy</li>
-                  <li><strong>One Hundred Years of Solitude</strong> — Gabriel García Márquez</li>
-               </ul>
-            </div>
+            <h3>Non-Fiction</h3>
+            <ul class="posts books">
+               <li><img src="images/books/years-of-lyndon-johnson.jpg" alt="" width="68" height="100" loading="lazy"><span><strong>The Years of Lyndon Johnson</strong><small>Robert Caro</small></span></li>
+               <li><img src="images/books/power-broker.jpg" alt="" width="67" height="100" loading="lazy"><span><strong>The Power Broker</strong><small>Robert Caro</small></span></li>
+               <li><img src="images/books/zen-motorcycle-maintenance.jpg" alt="" width="58" height="100" loading="lazy"><span><strong>Zen and the Art of Motorcycle Maintenance</strong><small>Robert M. Pirsig</small></span></li>
+            </ul>
+            <h3>Fiction</h3>
+            <ul class="posts books">
+               <li><img src="images/books/confederacy-of-dunces.jpg" alt="" width="64" height="100" loading="lazy"><span><strong>A Confederacy of Dunces</strong><small>John Kennedy Toole</small></span></li>
+               <li><img src="images/books/remainder.jpg" alt="" width="65" height="100" loading="lazy"><span><strong>Remainder</strong><small>Tom McCarthy</small></span></li>
+               <li><img src="images/books/one-hundred-years-of-solitude.jpg" alt="" width="60" height="100" loading="lazy"><span><strong>One Hundred Years of Solitude</strong><small>Gabriel García Márquez</small></span></li>
+            </ul>
+            <h3>Technical</h3>
+            <ul class="posts books">
+               <li><img src="images/books/cmos-vlsi-design.jpg" alt="" width="80" height="100" loading="lazy"><span><strong>CMOS VLSI Design</strong><small>Weste &amp; Harris</small></span></li>
+               <li><img src="images/books/vlsi-physical-design.jpg" alt="" width="67" height="100" loading="lazy"><span><strong>VLSI Physical Design: From Graph Partitioning to Timing Closure</strong><small>Kahng et al.</small></span></li>
+               <li><img src="images/books/advanced-fpga-design.jpg" alt="" width="62" height="100" loading="lazy"><span><strong>Advanced FPGA Design</strong><small>Steve Kilts</small></span></li>
+            </ul>
          </section>
          <section id="friends">
             <!-- FRIENDS -->
