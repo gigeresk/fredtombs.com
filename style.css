@@ -14,6 +14,9 @@
   --codebg: rgba(128, 128, 128, .07);
   --selection: rgba(0, 51, 179, .15);
 
+  /* Text Claude wrote, marked {++ ... ++} in the markdown, for review */
+  --claude: #1a56db;
+
 }
 
 :root {
@@ -31,10 +34,11 @@
     --c-fn: #e3c78a;
     --codebg: rgba(255, 255, 255, .05);
     --selection: rgba(130, 170, 255, .25);
+    --claude: #7aa2ff;
   }
 
   /* Figures are diagrams on white; tone them down so they don't glare */
-  figure img {
+  figure img, .lightbox.open img {
     filter: brightness(.85);
     border-radius: 4px;
     transition: filter .2s;
@@ -381,7 +385,8 @@ figure {
   max-width: 80ch;
 }
 
-figure img, figure video {
+figure img, figure video,
+p > img:only-child {  /* uncaptioned images, like the dataflow graphs */
   margin: 0 auto;
 }
 
@@ -520,7 +525,8 @@ article time {
   color: var(--textcolor);
 }
 
-.lightbox:target {
+.lightbox:target,
+.lightbox.open {
   top: 0;
   right: 0;
   left: 0;
@@ -536,6 +542,33 @@ article time {
 .lightbox img {
   max-height: 100vh;
   z-index: 4;
+}
+
+/* Opened by zoom.js: scale the image up to fill the screen */
+img.zoomable { cursor: zoom-in; }
+
+.lightbox.open {
+  cursor: zoom-out;
+  animation: lightbox-in .15s ease-out;
+}
+
+.lightbox.open img {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  padding: 3em 1em;
+  object-fit: contain;
+}
+
+html.lightbox-open { overflow: hidden; }
+
+@keyframes lightbox-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox.open { animation: none; }
 }
 
 .lightbox:target:before { /* Loading spinner */
@@ -557,7 +590,8 @@ article time {
   100% { transform: rotate(360deg); }
 }
 
-.lightbox:target:after { /* Ã— to close */
+.lightbox:target:after,
+.lightbox.open:after { /* Ã— to close */
   content: "\00D7";
   position: fixed;
   font-size: 2em;
@@ -639,3 +673,65 @@ td:has(> .pass) {
 td:has(> .fail) {
   background: rgba(208, 59, 59, .14);
 }
+
+/* Code carousel: swipe the track or click a tab */
+.code-slides {
+  margin: 1em 0;
+  max-width: 80ch;
+}
+
+.code-slides-tabs {
+  position: relative;
+  display: flex;
+  gap: .25em;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.code-slides-tabs button {
+  font: inherit;
+  font-family: ui-monospace, SF Mono, Menlo, Monaco, Andale Mono, monospace;
+  font-size: .75em;
+  padding: .35em .8em;
+  border: 0;
+  border-radius: 4px 4px 0 0;
+  background: none;
+  color: inherit;
+  opacity: .6;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.code-slides-tabs button:hover { opacity: 1; }
+
+.code-slides-tabs button[aria-selected="true"] {
+  background: var(--codebg);
+  opacity: 1;
+}
+
+.code-slides-track {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.code-slides-tabs::-webkit-scrollbar,
+.code-slides-track::-webkit-scrollbar { display: none; }
+
+.code-slides .slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  background: var(--codebg);
+}
+
+.code-slides .slide table.c-block {
+  margin: 0;
+  width: 100%;
+  background: none;
+}
+
+/* Claude-written text, from {++ ... ++} in the markdown */
+.claude, .claude * { color: var(--claude); }

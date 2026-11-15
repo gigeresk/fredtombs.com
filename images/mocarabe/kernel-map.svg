@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 260" font-family="Times New Roman, Times, serif" font-size="14">
+<rect width="790" height="260" fill="#fff"/>
+<line x1="16" y1="14" x2="774" y2="14" stroke="#121212" stroke-width="1.4"/>
+<text x="52.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212">CTX</text>
+<text x="118.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212">FIFO depth</text>
+<text x="230.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212" font-style="italic">adder_chain</text>
+<text x="330.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212" font-style="italic">fig3</text>
+<text x="430.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212" font-style="italic">level1_linear</text>
+<text x="530.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212" font-style="italic">poly3</text>
+<text x="630.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212" font-style="italic">poly_quadratic</text>
+<text x="740.0" y="36.0" font-size="14" text-anchor="middle" fill="#121212">area (µm²)</text>
+<line x1="16" y1="46" x2="774" y2="46" stroke="#121212" stroke-width="0.8"/>
+<text x="52.0" y="66.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="118.0" y="66.0" font-size="14" text-anchor="middle" fill="#121212">16</text>
+<text x="230.0" y="66.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="330.0" y="66.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="430.0" y="66.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="530.0" y="66.0" font-size="14" text-anchor="middle" fill="#5a5a5a">–</text>
+<text x="630.0" y="66.0" font-size="14" text-anchor="middle" fill="#5a5a5a">–</text>
+<text x="740.0" y="66.0" font-size="14" text-anchor="middle" fill="#121212">59.7K</text>
+<text x="52.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">5</text>
+<text x="118.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">16</text>
+<text x="230.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="330.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="430.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="530.0" y="96.0" font-size="14" text-anchor="middle" fill="#5a5a5a">–</text>
+<text x="630.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">5</text>
+<text x="740.0" y="96.0" font-size="14" text-anchor="middle" fill="#121212">63.1K (+6%)</text>
+<rect x="16" y="106" width="758" height="30" fill="#e6e6e6"/>
+<text x="52.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">6</text>
+<text x="118.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">16</text>
+<text x="230.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">4</text>
+<text x="330.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">4</text>
+<text x="430.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">4</text>
+<text x="530.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">6</text>
+<text x="630.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">5</text>
+<text x="740.0" y="126.0" font-size="14" text-anchor="middle" fill="#121212" font-weight="bold">66.6K (+12%)</text>
+<text x="52.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="118.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">32</text>
+<text x="230.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="330.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="430.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="530.0" y="156.0" font-size="14" text-anchor="middle" fill="#5a5a5a">–</text>
+<text x="630.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="740.0" y="156.0" font-size="14" text-anchor="middle" fill="#121212">80.6K (+35%)</text>
+<text x="52.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">5</text>
+<text x="118.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">32</text>
+<text x="230.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="330.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="430.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="530.0" y="186.0" font-size="14" text-anchor="middle" fill="#5a5a5a">–</text>
+<text x="630.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="740.0" y="186.0" font-size="14" text-anchor="middle" fill="#121212">84.3K (+41%)</text>
+<text x="52.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="118.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">64</text>
+<text x="230.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="330.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="430.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="530.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="630.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">4</text>
+<text x="740.0" y="216.0" font-size="14" text-anchor="middle" fill="#121212">120.1K (+101%)</text>
+<line x1="16" y1="226" x2="774" y2="226" stroke="#121212" stroke-width="1.4"/>
+<text x="16.0" y="248.0" font-size="12" text-anchor="start" fill="#5a5a5a">Entries are the lowest II at which the kernel maps and passes simulation; – = doesn't map. Shaded: the chip I taped out.</text>
+</svg>

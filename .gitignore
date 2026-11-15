@@ -3,3 +3,6 @@
 blog-mocarabe-fpga.html
 # Unpublished drafts
 drafts/
+
+# Python bytecode
+__pycache__/

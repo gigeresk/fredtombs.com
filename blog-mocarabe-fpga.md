@@ -1,5 +1,6 @@
 ---
 date: October 2026
+image: images/thumbs/blog-mocarabe-fpga.jpg
 ---
 # Back to square one: Routing in space and time on a toroidal CGRA
 Coming back to something you wrote years ago is like moving back into your childhood home. Everything is where you left it, it's smaller than you remember, and the wiring isn't up to code.
@@ -22,7 +23,7 @@ in one task (such as arithmetic or accessing memory) connected with a programmab
 
 A CGRA overlay is an implementation of a CGRA on top of an FPGA. FPGA place and route can take hours, and designs written in high-level synthesis often run at low clock speeds. An overlay is placed, routed and floorplanned once, so it runs fast (645–768 MHz in the paper), and mapping a new design means compiling for the overlay instead of rerunning the FPGA tools. The alternative is to build the CGRA as its own chip (an ASIC), which is where this series is headed.
 
-Mocarabe is an array of PEs that can perform addition, multiplication, or off-chip access to data (inputs and outputs). The PEs are connected with a two-dimensional torus network, with only northbound and eastbound links. A switch next to every PE steers data through the interconnect, and each link carries *C* channels, set when the architecture is generated. The diagram below illustrates this design:
+Mocarabe is an array of PEs that can perform addition, multiplication, or off-chip access to data (inputs and outputs). The PEs are connected with a two-dimensional torus network, with only northbound and eastbound links. A torus is a grid whose edges wrap around: a value that leaves the east edge of a row comes back in on the west edge of the same row, and one that leaves the top of a column comes back in at the bottom. Picture the grid rolled up into a donut. That's the "toroidal" in the title. A switch next to every PE steers data through the interconnect, and each link carries *C* channels, set when the architecture is generated. The diagram below illustrates this design:
 
 ![A grid of PEs and switches with wrap-around links](images/mocarabe/array.png "A Mocarabe array. Each PE has its own switch, and links wrap around at the edges to form a torus. Fig. 1 from the [FCCM paper](https://ieeexplore.ieee.org/document/9444076).")
 
@@ -92,7 +93,7 @@ freeing and very satisfying.
 It may be worth taking a more in-depth look at the algorithms in play for a future post, especially the dual PathFinder/ILP router implementations.
 
 ## Home improvement
-What did I have to do to get the project up to snuff? Nobody had touched the code since May 2021. My comic books were still under my bed but my Game Boy battery was fried.
+What did I have to do to get the project up to snuff? Nobody had touched the code since May 2021.
 
 Here's what changed over the course of a few months:
 - Modernized the Python (pyproject.toml, type annotations, auto code formatting, the list goes on)
@@ -118,6 +119,8 @@ All that got me to... more or less where I thought I was when I submitted the pa
 ## Bringing down the house
 That brings you up to speed on what the project does and what I've been up to. Before we go, here are some parting points (I have trouble saying goodbye).
 
+First, a reminder of why this is worth doing: Mocarabe gets you a high-throughput architecture for a new kernel really quickly. The overlay is placed, routed and floorplanned once, and it runs at 645–768 MHz. A mapped kernel produces a new result every time the contexts wrap around, and mapping a new kernel is a compile onto that fixed array instead of another long round of FPGA place and route.
+
 A note on the original implementation: the original paper targeted the Xilinx Alveo U280.
 Targeting a real FPGA and comparing against Vivado's high-level synthesis was the crux of the paper, and the details are in there.
 Here's a device view:
@@ -137,10 +140,16 @@ Roll credits!
 
 ### Credits
 - Prof. Nachiket Kapre (University of Waterloo), who conceived and supervised the original project
-- Alireza Mellat, co-author of the FCCM paper, who wrote his Master's thesis on the original project and extended it to mesh and butterfly fat-tree networks
+- Alireza Mellat, co-author of the FCCM paper, who wrote his Master's thesis on an expanded version of the original project
 
 ### Links
 - [FCCM 2021 paper](https://ieeexplore.ieee.org/document/9444076)
 - [Alireza Mellat's Master's thesis](https://uwspace.uwaterloo.ca/handle/10012/17993)
 - [Mocarabe GitHub](https://github.com/gigeresk/mocarabe)
 - [TinyTapeout](https://tinytapeout.com)
+
+
+
+<!-- notes:
+- better placement viz?
+-->

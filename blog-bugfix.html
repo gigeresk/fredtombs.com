@@ -7,20 +7,23 @@
       <meta name="description" content="A 20-year-old assert in ABC written for 32-bit systems fires intermittently on 64-bit with ASLR. Here's how we tracked it down.">
       <meta property="og:title" content="Why ABC was randomly crashing our FPGA CI">
       <meta property="og:description" content="A 20-year-old assert in ABC written for 32-bit systems fires intermittently on 64-bit with ASLR. Here's how we tracked it down.">
+      <meta property="og:image" content="https://fredtombs.com/images/thumbs/blog-bugfix.png">
       <meta name="twitter:card" content="summary">
       <meta name="color-scheme" content="light dark">
       <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
       <meta name="theme-color" content="#161514" media="(prefers-color-scheme: dark)">
       <link rel="icon" type="image/svg+xml" href="favicon.svg">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap">
       <link rel="stylesheet" href="style.css">
+      <script src="zoom.js" defer></script>
    </head>
    <body>
       <header>
-         <h1>
-            <a href="index.html">Fred Tombs</a>
-         </h1>
+         <h1>Fred Tombs</h1>
          <nav>
-            <a href="index.html#projects">Projects</a>
+            <a href="index.html">Home</a>
             <a href="index.html#books">Book Recommendations</a>
             <a href="index.html#friends">Friends</a>
          </nav>
@@ -58,7 +61,7 @@
             </table>
             <p>Error 86 doesn't mean anything to me, but this is clearly a failed assert. After retriggering the job, I got a green check.
               A few weeks later, we hit a different failure on a completely different design and a different FPGA architecture.</p>
-            <p>I found a report of the same error in the yosys github issue tracked (<a href="https://github.com/YosysHQ/yosys/issues/1028">here</a>), closed seven years ago as irreproducible while remaining unsolved. *takes drag from cigarette*.</p>
+            <p>I found a report of the same error in the yosys github issue tracker (<a href="https://github.com/YosysHQ/yosys/issues/1028">here</a>), closed seven years ago as irreproducible while remaining unsolved. *takes drag from cigarette*.</p>
             <p>Let's take a moment to reason about the assert. It's at line 200:</p>
               <table class="c-block">
                 <tr><td class="ln">175</td><td class="cd"><span class="c-kw">unsigned</span> * <span class="c-fn">Lpk_CutTruth</span>( Lpk_Man_t * p, Lpk_Cut_t * pCut, <span class="c-kw">int</span> fInv )</td></tr>
@@ -205,10 +208,10 @@
                <tr><td class="cd"><code>assert((ABC_PTRUINT_T)pFanin->pCopy &gt; 0xFFFF );  // catch small int values or NULL</code></td></tr>
                </table>
                <p>The original assert wasn't far off from this, but it had growing pains when the world moved to 64-bit. The inequality also makes the intent a bit clearer vs the bitwise <code>'&'</code>.</p>
-               <p>As an added security measure, I recommend building ABC with <code>-DNDEBUG</code> to strip asserts from builds deployed to customers, who shouldn't ever have to look at asserts. </p>
+               <p>As an added user-experience measure, I recommend building ABC with <code>-DNDEBUG</code> to strip asserts from builds deployed to customers, who shouldn't ever have to look at asserts. </p>
 
             <h3>The release</h3>
-            <p>I opened a PR for ABC, and it got <a href="https://github.com/berkeley-abc/abc/pull/505">merged with no notes</a>! There was one other line in the same file which was exposed to the same behaviour .</p>
+            <p>I opened a PR for ABC, and it got <a href="https://github.com/berkeley-abc/abc/pull/505">merged with no notes</a>! There was one other line in the same file which was exposed to the same behaviour.</p>
             <p>Open-source EDA projects need all the help they can get!
                I've been working on an ABC regression test framework, and this is the perfect time to open-source it.
                It's hosted at <a href="https://github.com/gigeresk/abc-1212">abc-1212</a> and runs CI daily. It's still in development, and 

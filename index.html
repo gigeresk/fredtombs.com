@@ -15,15 +15,17 @@
       <meta name="theme-color" content="#161514" media="(prefers-color-scheme: dark)">
       <!-- You could also inline the stylesheet -->
       <link rel="icon" type="image/svg+xml" href="favicon.svg">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap">
       <link rel="stylesheet" href="style.css">
+      <script src="zoom.js" defer></script>
    </head>
    <body>
       <header>
-         <h1>
-            <a href="">Fred Tombs</a>
-         </h1>
+         <h1>Fred Tombs</h1>
          <nav>
-            <a href="#projects">Projects</a>
+            <a href="#home">Home</a>
             <a href="#books">Book Recommendations</a>
             <a href="#friends">Friends</a>
          </nav>
@@ -38,16 +40,16 @@
                &nbsp;&nbsp;
                <a href="https://github.com/gigeresk">GitHub</a>
             </p>
-         </section>
-         <section id="projects">
-            <!-- PROJECTS -->
-            <ul>
-               <li><a href="https://github.com/gigeresk/mocarabe">mocarabe (published at FCCM 2021)</a></li>
-            </ul>
             <h3>Blog</h3>
-            <ul>
-               <li><a href="blog-mocarabe-fpga.html">Back to square one: Routing in space and time on a toroidal CGRA — October 2026</a></li>
-               <li><a href="blog-bugfix.html">Why ABC was randomly crashing our FPGA CI (and the 20-year-old assert behind it) — April 2026</a></li>
+            <ul class="posts">
+               <!-- <li><a href="blog-mocarabe-asic.html"><img src="images/thumbs/blog-mocarabe-asic.jpg" alt="" width="100" height="100"><span>SCRATCHY: Yet another FPGA feed handler — February 2027</a></li>
+               <li><a href="blog-mocarabe-asic.html"><img src="images/thumbs/blog-mocarabe-asic.jpg" alt="" width="100" height="100"><span>Building a protocol emulator chip — January 2027</a></li>
+               <li><a href="blog-mocarabe-asic.html"><img src="images/thumbs/blog-mocarabe-asic.jpg" alt="" width="100" height="100"><span>Three's Company: Digging into GDS — December 2026</a></li>
+               <li><a href="blog-mocarabe-fpga.html"><img src="images/thumbs/blog-mocarabe-asic.jpg" alt="" width="100" height="100"><span>SlackJaw: GNN RL 4 LYFE — November 2026</a></li>
+               <li><a href="blog-bugfix.html"><img src="images/thumbs/blog-mocarabe-asic.jpg" alt="" width="100" height="100"><span>Big Tuna: My Talking Fish: A line-rate packet analyzer — November 2026</a></li> -->
+               <li><a href="blog-mocarabe-asic.html"><img src="images/thumbs/blog-mocarabe-asic.jpg" alt="" width="100" height="100"><span>Tea for two-by-two: Taping out tiny tiles — November 2026</span></a></li>
+               <li><a href="blog-mocarabe-fpga.html"><img src="images/thumbs/blog-mocarabe-fpga.jpg" alt="" width="100" height="100"><span>Back to square one: Routing in space and time on a toroidal CGRA — October 2026</span></a></li>
+               <li><a href="blog-bugfix.html"><img src="images/thumbs/blog-bugfix.png" alt="" width="100" height="100"><span>Why ABC was randomly crashing our FPGA CI (and the 20-year-old assert behind it) — April 2026</span></a></li>
             </ul>
          </section>
          <section id="books">
@@ -77,6 +79,7 @@
          <section id="friends">
             <!-- FRIENDS -->
             <ul>
+               <li><a href="https://arampooladian.com/">arampooladian.com</a></li>
                <li><a href="https://anvil.cool">anvil.cool</a></li>
 	       <li><a href="https://dmalataeva.github.io/">deniza.me</a></li>
                <li><a href="https://rabeeaahmad.com">flowwithbeea</a></li>
